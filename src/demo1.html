@@ -1,0 +1,48 @@
+<html>
+	<head>
+	  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+		<script src="../lib/jquery-1.11.3.min.js"></script>
+		<script src="../lib/bootstrap.min.js"></script>
+		<script src="../lib/knockout-3.3.0.debug.js"></script>
+		<script src="demo1.js"></script>
+	</head>
+	<body>
+		<h1>Super Conference</h1>
+		
+		<p>Please fill out the registration form below.</p>
+		<form class="form-horizontal" role="form">
+		<table>
+			<thead>
+				<tr>
+					<th>Registrant</th>
+					<th>Description</th>
+					<th>Qty.</th>
+					<th>Optional Overcharge</th>
+					<th>Amount</th>
+					<th></th>
+
+				</tr>
+			</thead>
+			<tbody foreach: lineItems>
+				<tr>
+					<td><!--<input class="form-control" data-bind="value: name"/>--></td>
+					<td><!--<select class="form-control" data-bind="options: $root.availableMeals, value: item, optionsText: 'description'"></select>--></td>
+					<td><!--<input class="form-control" type="number" class="form-control pull-right narrow" data-bind="enable: selected, value: qty" />--></td>
+
+					<td><!--<input class="form-control" type="checkbox" data-bind="checked: item.overcharge"/>--></td>
+					<td><!--<span data-bind="text: item.extendedAmount" />--></td>
+					<td><!--<button class="form-control small" type="button" data-bind="click: $root.removeItem">Remove</button>--></td>
+				</tr>
+			</tbody>
+
+		</table>
+
+		<p><!--<button type="button" data-bind="click: addItem">Add Item</button>--></p>
+
+		</form>
+
+		<p class="pull-right">Total amount: <bold><!--<span data-bind="text: totalAmount"/>--></bold></p>
+
+	</body>
+</html>
