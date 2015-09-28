@@ -1,4 +1,5 @@
-var LineItem = function(name, item) {
+// Represents one line on the form
+function LineItem(name, item) {
 
 	var self = this;
 
@@ -7,54 +8,49 @@ var LineItem = function(name, item) {
 	this.overcharge = ko.observable(false);
 	this.qty = ko.observable(1);
 
-	this.effectivePrice = ko.computed(function () {
+	this.effectiveAmount= ko.computed(function () {
 		if (self.overcharge())
 			return self.item().amount + self.item().overchargeAmount;
 		else
 			return self.item().amount;
-
 	});
 
-	this.extendedPrice = ko.computed(function () {
-		return self.effectivePrice() * self.qty();
+	this.extendedAmount = ko.computed(function () {
+		return self.effectiveAmount() * self.qty();
 	});
-};
+}
 
-
-var OrderViewModel = function() {
+// Represents the entire form model
+function OrderViewModel() {
 	var self = this;
 
-	this.lineItems = ko.observableArray();
+	this.availableItems = [
+		{ description: "Standard registration", amount: 195.00, overchargeAmount: 50.00 },
+		{ description: "Deluxe Registration (includes swag package)", amount: 225.00, overchargeAmount: 60.00 },
+		{ description: "Budget Registration (no meals or bathroom access)", amount: 99.00, overchargeAmount: 25.00 }
+	];
 
+	this.lineItems = ko.observableArray([ new LineItem("", self.availableItems[0])]);
 
-	this.totalPrice = ko.computed(function () {
+	this.totalAmount = ko.computed(function () {
 
 		var total = 0;
-		$.each(self.lineItems(), function(index, item) {
-			total += item.extendedPrice();
+		$.each(self.lineItems(), function (index, item) {
+      total += this.extendedAmount();
 		});
-
 		return total;
 	});
 
-
 	this.addItem = function() {
-		self.LineItems.push("", self.avaialableItems[0]);
+		self.lineItems.push(new LineItem("", self.availableItems[0]));
 	};
 
-	this.removeItem = function() {
-
+	this.removeItem = function(item) {
+		self.lineItems.remove(item);
 	};
-
-	this.avaialableItems = [
-		{ desc: "Standard registration", amount: 195.00, overchargeAmount: 50.00 },
-		{ desc: "Deluxe Registration (includes swag package", amount: 225.00, overchargeAmount: 60.00 },
-		{ desc: "Budget Registration (no meals or bathroom access)", amount: 99.00, overchargeAmount: 25.00 }
-	];
-};
+}
 
 
 // Initialize the form
 var model = new OrderViewModel();
-model.lineItems.push(new LineItem("", model.avaialableItems[0]));
 ko.applyBindings(model);
